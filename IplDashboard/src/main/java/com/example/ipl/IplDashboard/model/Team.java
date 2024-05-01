@@ -34,6 +34,12 @@ public class Team {
 
     @Transient
     private List<Match> latestMatches;
+    public Team(String teamName){
+        this.teamName=teamName;
+        this.totalWins=0;
+        this.totalMatches=0;
+    }
+
 
 
 }

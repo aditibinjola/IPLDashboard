@@ -5,10 +5,12 @@ import com.example.ipl.IplDashboard.model.Team;
 import com.example.ipl.IplDashboard.repo.MatchRepository;
 import com.example.ipl.IplDashboard.repo.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+@RestController
+@RequestMapping("/")
+@CrossOrigin
 
 public class TeamController {
     TeamRepository teamRepository;
@@ -18,13 +20,20 @@ public class TeamController {
         this.teamRepository= teamRepository;
         this.matchRepository= matchRepository;
     }
-//    @GetMapping("/team")
-//    public Team getTeam(@RequestParam String teamName){
-//        Team t= teamRepository.getByTeamName();
-//        List<Match> matchList= matchRepository.getLatest4MatchesByteamName();
-//        t.setLatestMatches(matchList);
-//        return t;
-//    }
-
-
+    @GetMapping("/team/{teamName}")
+    public Team getTeam(@PathVariable String teamName){
+        Team t= teamRepository.getByName(teamName);
+        List<Match> matchList= matchRepository.GetMatchInfo(teamName);
+        t.setLatestMatches(matchList);
+        return t;
+    }
+    @GetMapping("/{teamName}")
+    public Team getTeamtest(@PathVariable String teamName){
+        Team t=teamRepository.getByName(teamName);
+        return t;
+    }
+    @GetMapping("/team")
+    public Iterable<Team> getAllTeam(){
+        return this.teamRepository.findAll();
+    }
 }

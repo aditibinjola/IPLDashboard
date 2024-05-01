@@ -13,10 +13,9 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -34,6 +33,7 @@ public class MatchUtil {
     public List<String[]> readLineByLine(Path filePath) throws Exception {
         List<String[]> list = new ArrayList<>();
         Map<String, Team> m= new HashMap<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
 
         try (Reader reader = Files.newBufferedReader(filePath)) {
             try (CSVReader csvReader = new CSVReader(reader)) {
@@ -43,7 +43,8 @@ public class MatchUtil {
                     Match match = new Match();
                     match.setID(Long.parseLong(line[0]));
                     match.setCity(line[1]);
-                    match.setDate((line[2]));
+                    match.setMatchDate(LocalDate.parse(line[2],formatter));
+//                    match.setMatchDate(LocalDate.parse(line[2]);
 //                    match.setDate(LocalDate.parse(line[2]));
 //                    match.setSeason(Integer.parseInt(line[3]));
                     match.setSeason((line[3]));
